@@ -1,0 +1,124 @@
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+using namespace std;
+
+int value[1 << 25];
+
+/**
+   *��������������������num���ڵ�num���������������value������
+   *@param value[]:����������������ڸ�������
+   *@param num:��ʾ���Բ���num������ͬʱ��Щ������ֲ�����num
+**/ 
+void getRandomNum(int* value, int num)
+{
+    for(int i = 0;i < num; i++)
+    {
+        value[i] = (int)(rand()%num);
+    }
+}
+
+/**
+   *�������򣺽�һ����������ת��Ϊ���շǽ������������
+   *@input ������һ�����飬�Լ�����ĳ���
+   *@output ����ֵΪ�գ�ʹ�ô�����������鰴�շǽ�������
+   *@param value[]: ���������������
+   *@param location:��Ϊ�����λ�� 
+**/
+void InsertSort(int* value,int len)
+{
+    for(int i=1;i<len;i++)
+    {
+        int temp=value[i];
+        int location;
+        for(int j=i-1;j>=0;j--)
+        {
+			if(temp<value[j])
+            {
+                value[j+1]=value[j];
+                location=j;
+            }
+            else {
+                location=j+1;
+                break;
+            }
+        }
+        value[location]=temp;
+    }
+}
+
+/**�鲢
+**/
+void merge(int* value,int low,int high,int mid) 
+{
+	int temp[high-low+1];
+	int s1=low;int s2=mid+1;int i=0;
+	while(s1<=mid&&s2<=high)
+	{
+		if(value[s1]<value[s2])
+		{
+			temp[i]=value[s1];
+			i++;s1++; 
+		}
+		else
+		{
+			temp[i]=value[s2];
+			i++;s2++;
+		} 
+	}
+	while(s1<=mid)
+	{
+		temp[i++]=value[s1++];
+	}
+	while(s2<=high)
+	{
+	    temp[i++]=value[s2++];	
+	}
+	for(int j=0;j<high-low+1;j++)
+	value[j+low]=temp[j];
+}
+
+/**   *�鲢���򣺽�һ����������ת��Ϊ���շǽ������������
+   *@input ������һ�����飬�Լ�����ĳ���
+   *@output ����ֵΪ�գ�ʹ�ô�����������鰴�շǽ�������
+   *@param value[]: ��������������� 
+**/
+void MergeSort(int* value,int low,int high)
+{
+	if(high-low<2) return;
+	int mid=(low+high)/2;
+	MergeSort(value,low,mid);
+	MergeSort(value,mid+1,high);
+	merge(value,low,high,mid);
+}
+
+void OutPut(int* value,int len)
+{
+	for(int i=0;i<len;i++)
+	{
+		cout<<value[i]<<" ";
+	}
+	cout<<endl;
+}
+
+int main()
+{
+    int num;
+    while(cin>>num)
+    {
+        clock_t  start,finish;
+        getRandomNum(value,num);
+        OutPut(value,num);
+       //��������ȫ�����������
+        start = clock();
+        InsertSort(value,num);
+        finish = clock();
+        cout << "Time in randomNums the insertSort is " << static_cast<double>(finish-start)/CLOCKS_PER_SEC*1000 << " ms" << endl;
+        //�鲢����ȫ�����������
+        start = clock();
+        MergeSort(value,0,num-1);
+        finish = clock();
+        OutPut(value,num);
+        cout << "Time in randomNums the mergeSort is " << static_cast<double>(finish-start)/CLOCKS_PER_SEC*1000 << " ms" << endl;
+    }
+}
