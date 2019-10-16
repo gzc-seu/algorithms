@@ -5,11 +5,7 @@ using namespace std;
 
 int value[1 << 25];
 
-/**
-   *��������������������num���ڵ�num���������������value������
-   *@param value[]:����������������ڸ�������
-   *@param num:��ʾ���Բ���num������ͬʱ��Щ������ֲ�����num
-**/ 
+ 
 void getRandomNum(int* value, int num)
 {
     for(int i = 0;i < num; i++)
