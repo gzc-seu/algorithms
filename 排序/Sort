@@ -5,7 +5,11 @@ using namespace std;
 
 int value[1 << 25];
 
- 
+/**
+   *��������������������num���ڵ�num���������������value������
+   *@param value[]:����������������ڸ�������
+   *@param num:��ʾ���Բ���num������ͬʱ��Щ������ֲ�����num
+**/ 
 void getRandomNum(int* value, int num)
 {
     for(int i = 0;i < num; i++)
@@ -88,6 +92,44 @@ void MergeSort(int* value,int low,int high)
 	merge(value,low,high,mid);
 }
 
+/**
+   *ѡ�����򣺽�һ����������ת��Ϊ���շǽ������������
+   *@input ������һ�����飬�Լ�����ĳ���
+   *@output ����ֵΪ�գ�ʹ�ô�����������鰴�շǽ�������
+   *@param value[]: ���������������
+   *@param len����������ĳ���
+**/
+void SelectSort(int* value,int len)
+{
+	for(int i=0;i<len;i++)
+	{
+		int minsize=i;
+		for(int j=i+1;j<len;j++)
+		{
+		if(value[j]<value[minsize])	minsize=j;
+		}
+		swap(value[i],value[minsize]);
+	}
+}
+
+/**
+   *ð�����򣺽�һ����������ת��Ϊ���շǽ������������
+   *@input ������һ�����飬�Լ�����ĳ���
+   *@output ����ֵΪ�գ�ʹ�ô�����������鰴�շǽ�������
+   *@param value[]: ���������������
+   *@param len����������ĳ���
+**/
+void BubbleSort(int* value, int len)
+{
+	for(int i=0;i<len;i++)
+	{
+		for(int j=0;j<len-i-1;j++)
+		{
+			if(value[j]>value[j+1]) swap(value[j],value[j+1]);
+		}
+	}
+}
+
 void OutPut(int* value,int len)
 {
 	for(int i=0;i<len;i++)
@@ -104,7 +146,16 @@ int main()
     {
         clock_t  start,finish;
         getRandomNum(value,num);
-        OutPut(value,num);
+        //ð������ȫ�����������
+        start = clock();
+        BubbleSort(value,num);
+        finish = clock();
+        cout << "Time in randomNums the BubbleSort is " << static_cast<double>(finish-start)/CLOCKS_PER_SEC*1000 << " ms" << endl;
+        //ѡ������ȫ�����������
+        start = clock();
+        SelectSort(value,num);
+        finish = clock();
+        cout << "Time in randomNums the selectSort is " << static_cast<double>(finish-start)/CLOCKS_PER_SEC*1000 << " ms" << endl;
        //��������ȫ�����������
         start = clock();
         InsertSort(value,num);
@@ -114,7 +165,7 @@ int main()
         start = clock();
         MergeSort(value,0,num-1);
         finish = clock();
-        OutPut(value,num);
         cout << "Time in randomNums the mergeSort is " << static_cast<double>(finish-start)/CLOCKS_PER_SEC*1000 << " ms" << endl;
+        
     }
 }
