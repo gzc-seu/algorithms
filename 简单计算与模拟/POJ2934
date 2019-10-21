@@ -1,0 +1,24 @@
+#include<cstdio>
+#include<string>
+#include<iostream>
+using namespace std;
+int main()
+{
+	string str,substr;
+	while(cin>>str)
+	{
+		cin>>substr;
+		int len1,len2,max=0;
+		len1=str.length();
+		len2=substr.length();
+		for(int i=1;i<len1;i++)
+		{
+			if(str[i]>str[max])
+			max=i;
+		}
+		max=max+1;
+		str.insert(max,substr);
+		cout<<str<<endl;
+	}
+	return 0;
+}
