@@ -1,0 +1,42 @@
+#include<iostream>
+using namespace std;
+int main()  //基本思想：遍历数组，初始值为0，数到则为1
+{
+    int n,m;
+    cin>>n>>m;
+    int s[300]={0};
+    while(n!=0&&m!=0)
+    {
+        int count=0;
+        int index=-1;
+        for(int i=1;i<n;i++)
+        {
+            count=0;
+            while(count!=m)
+            {
+            index=(index+1)%n; //数组循环
+            if(s[index]==0)
+            {
+                count++;
+                if(count==m)
+                {
+                   s[index]=1;
+                   
+                }
+            }
+            }
+        }
+        
+        for(int j=0;j<n;j++)
+        {
+            if(s[j]==0) cout<<j+1<<endl;
+        }
+        for(int j=0;j<300;j++)
+        {
+            s[j]=0;
+        }
+        cin>>n>>m;
+    }
+
+    return 0;
+}
