@@ -1,0 +1,24 @@
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main()
+{
+    int n,a,b,c,d,e,s1,s2;
+    long count;
+    int month[13]={0,31,28,31,30,31,30,31,31,30,31,30,31};
+    cin>>n;
+    for(int i=0;i<n;i++)
+    {
+        cin>>a>>b>>c>>d>>e;
+        s1=0;
+        s2=0;
+        for(int j=0;j<a;j++) s1=month[j]+s1;
+        for(int k=0;k<d;k++) s2=month[k]+s2;
+        s1=s1+b;
+        s2=s2+e;
+
+        count=pow(2,(s2-s1))*c;
+        cout<<count<<endl;
+    }
+    return 0;
+}
