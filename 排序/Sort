@@ -1,14 +1,16 @@
+
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include<math.h>
 using namespace std;
 
 int value[1 << 25];
 
 /**
-   *��������������������num���ڵ�num���������������value������
-   *@param value[]:����������������ڸ�������
-   *@param num:��ʾ���Բ���num������ͬʱ��Щ������ֲ�����num
+   *随机函数，可以随机产生num以内的num个随机数，并存在value数组中
+   *@param value[]:将产生的随机数存在该数组内
+   *@param num:表示可以产生num个数，同时这些随机数又不大于num
 **/ 
 void getRandomNum(int* value, int num)
 {
@@ -19,11 +21,11 @@ void getRandomNum(int* value, int num)
 }
 
 /**
-   *�������򣺽�һ����������ת��Ϊ���շǽ������������
-   *@input ������һ�����飬�Լ�����ĳ���
-   *@output ����ֵΪ�գ�ʹ�ô�����������鰴�շǽ�������
-   *@param value[]: ���������������
-   *@param location:��Ϊ�����λ�� 
+   *插入排序：将一个整型数组转化为按照非降序排序的数组
+   *@input 输入是一个数组，以及数组的长度
+   *@output 返回值为空，使得传入的整型数组按照非降序排列
+   *@param value[]: 待排序的整型数组
+   *@param location:作为插入的位置 
 **/
 void InsertSort(int* value,int len)
 {
@@ -47,7 +49,7 @@ void InsertSort(int* value,int len)
     }
 }
 
-/**�鲢
+/**归并
 **/
 void merge(int* value,int low,int high,int mid) 
 {
@@ -78,10 +80,10 @@ void merge(int* value,int low,int high,int mid)
 	value[j+low]=temp[j];
 }
 
-/**   *�鲢���򣺽�һ����������ת��Ϊ���շǽ������������
-   *@input ������һ�����飬�Լ�����ĳ���
-   *@output ����ֵΪ�գ�ʹ�ô�����������鰴�շǽ�������
-   *@param value[]: ��������������� 
+/**   *归并排序：将一个整型数组转化为按照非降序排序的数组
+   *@input 输入是一个数组，以及数组的长度
+   *@output 返回值为空，使得传入的整型数组按照非降序排列
+   *@param value[]: 待排序的整型数组 
 **/
 void MergeSort(int* value,int low,int high)
 {
@@ -93,11 +95,11 @@ void MergeSort(int* value,int low,int high)
 }
 
 /**
-   *ѡ�����򣺽�һ����������ת��Ϊ���շǽ������������
-   *@input ������һ�����飬�Լ�����ĳ���
-   *@output ����ֵΪ�գ�ʹ�ô�����������鰴�շǽ�������
-   *@param value[]: ���������������
-   *@param len����������ĳ���
+   *选择排序：将一个整型数组转化为按照非降序排序的数组
+   *@input 输入是一个数组，以及数组的长度
+   *@output 返回值为空，使得传入的整型数组按照非降序排列
+   *@param value[]: 待排序的整型数组
+   *@param len：整型数组的长度
 **/
 void SelectSort(int* value,int len)
 {
@@ -113,11 +115,11 @@ void SelectSort(int* value,int len)
 }
 
 /**
-   *ð�����򣺽�һ����������ת��Ϊ���շǽ������������
-   *@input ������һ�����飬�Լ�����ĳ���
-   *@output ����ֵΪ�գ�ʹ�ô�����������鰴�շǽ�������
-   *@param value[]: ���������������
-   *@param len����������ĳ���
+   *冒泡排序：将一个整型数组转化为按照非降序排序的数组
+   *@input 输入是一个数组，以及数组的长度
+   *@output 返回值为空，使得传入的整型数组按照非降序排列
+   *@param value[]: 待排序的整型数组
+   *@param len：整型数组的长度
 **/
 void BubbleSort(int* value, int len)
 {
@@ -128,6 +130,30 @@ void BubbleSort(int* value, int len)
 			if(value[j]>value[j+1]) swap(value[j],value[j+1]);
 		}
 	}
+}
+
+/**
+   *快速排序：分为划分和递归调用这两个步骤
+   *@input 输入为一个int数组
+   *@output 输出为按照非降序排列的数组
+   *@param value[]:需要排序的数组
+   *@param low：需要排序的下界
+   *@param high：需要排序的上界
+**/
+void quickSort(int* value, int low, int high)
+{
+	if(low>=high) return;
+	int k=value[low];
+	int i=low,j=high;
+	while(i!=j)
+	{
+		while(i<j&&value[j]>=k) j--;
+		swap(value[i],value[j]);
+		while(i<j&&value[i]<=k) i++;
+		swap(value[i],value[j]);
+	}
+	quickSort(value,low,i-1);
+	quickSort(value,i+1,high);
 }
 
 void OutPut(int* value,int len)
@@ -146,22 +172,29 @@ int main()
     {
         clock_t  start,finish;
         getRandomNum(value,num);
-        //ð������ȫ�����������
+        OutPut(value,num);
+        //快速排序全部随机的数组
+        start = clock();
+        quickSort(value,0,num-1);
+        finish = clock();
+        cout << "Time in randomNums the quickSort is " << static_cast<double>(finish-start)/CLOCKS_PER_SEC*1000 << " ms" << endl;
+        cout << "****************************************" << endl;
+        //冒泡排序全部随机的数组
         start = clock();
         BubbleSort(value,num);
         finish = clock();
         cout << "Time in randomNums the BubbleSort is " << static_cast<double>(finish-start)/CLOCKS_PER_SEC*1000 << " ms" << endl;
-        //ѡ������ȫ�����������
+        //选择排序全部随机的数组
         start = clock();
         SelectSort(value,num);
         finish = clock();
         cout << "Time in randomNums the selectSort is " << static_cast<double>(finish-start)/CLOCKS_PER_SEC*1000 << " ms" << endl;
-       //��������ȫ�����������
+       //插入排序全部随机的数组
         start = clock();
         InsertSort(value,num);
         finish = clock();
         cout << "Time in randomNums the insertSort is " << static_cast<double>(finish-start)/CLOCKS_PER_SEC*1000 << " ms" << endl;
-        //�鲢����ȫ�����������
+        //归并排序全部随机的数组
         start = clock();
         MergeSort(value,0,num-1);
         finish = clock();
